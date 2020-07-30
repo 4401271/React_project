@@ -5,13 +5,12 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.less'
 import logo from './images/logo.png'
 
-const Item = Form.Item
+const {Item} = Form
 
 export default class Login extends Component {
 
   onFinish = values => {
-    values.preventDefault()
-    alert('发送登录的Ajax请求') 
+    console.log(values)
   }
 
   render() {
@@ -42,7 +41,22 @@ export default class Login extends Component {
                   required: true,
                   message: '请输入您的用户名!',
                 },
-              ]}
+                {
+                  min:6,
+                  message:"用户名格式错误，长度最少为4位！"
+                },
+                {
+                  max:11,
+                  message:"用户名格式错误，长度最多为11位！"
+                },
+                {
+                  /* ?:0个或一个   *:0个或多个   +:一个或多个  必须要有^和$*/
+                  pattern:/^[a-zA-Z0-9_]$/,
+                  message:"用户名仅可以由字母、数字和下划线\"_\"组成！"
+                },
+              
+              ]
+            }
             >
               <Input prefix={<UserOutlined className="site-form-item-icon" style={{color:'rgba(0,0,0,.25)'}}/>} placeholder="用户名" />
             </Item>
@@ -53,6 +67,18 @@ export default class Login extends Component {
                 {
                   required: true,
                   message: '请输入您的密码!',
+                },
+                {
+                  min:6,
+                  message:"密码格式错误，长度最少为4位！"
+                },
+                {
+                  max:16,
+                  message:"密码格式错误，长度最多为16位！"
+                },
+                {
+                  pattern:/^[a-zA-Z0-9_]$/,
+                  message:"密码仅可以由字母、数字和下划线\"_\"组成！"
                 },
               ]}
             >
@@ -103,7 +129,8 @@ export default class Login extends Component {
     本质是一个函数
     函数接受一个组件
 
-    Form.create()返回的就是一个高阶组件
+    Form.create()返回的就是一个高阶组件Form.create()(Login)接受的参数是Login，Login就是个组件
+      但是！<Login/>是一个标签，就不是一个组件，它是Login组件的实例化对象，实例化对象的返回值就是一个标签
 
   --------- 声明式编程 -----------------
     map函数就是体现了声明式编程的思想，map遍历的过程不需要我们去写，已经被封装好了，我们只需要被被遍历
